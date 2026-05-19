@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AMENARDI — Nouveau Post</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0d;
+      --surface: #141414;
+      --border: #2a2a2a;
+      --accent: #c9a84c;
+      --accent-dim: rgba(201,168,76,0.12);
+      --text: #e8e2d9;
+      --muted: #6b6560;
+      --error: #c0392b;
+      --success: #27ae60;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      background-image:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.06) 0%, transparent 70%),
+        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.015) 39px, rgba(255,255,255,0.015) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.015) 39px, rgba(255,255,255,0.015) 40px);
+    }
+
+    .card {
+      width: 100%;
+      max-width: 560px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 3rem 3.5rem;
+      position: relative;
+      animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .header {
+      margin-bottom: 2.8rem;
+    }
+
+    .brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 2.4rem;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .divider {
+      width: 40px;
+      height: 1px;
+      background: var(--accent);
+      margin-top: 1.2rem;
+      opacity: 0.5;
+    }
+
+    .field {
+      margin-bottom: 2rem;
+      animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .field:nth-child(1) { animation-delay: 0.1s; }
+    .field:nth-child(2) { animation-delay: 0.2s; }
+
+    label {
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.7rem;
+    }
+
+    label span.req {
+      color: var(--accent);
+      margin-left: 2px;
+    }
+
+    /* FILE INPUT */
+    .file-area {
+      border: 1px dashed var(--border);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+
+    .file-area:hover, .file-area.dragover {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .file-area input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .file-icon {
+      font-size: 1.6rem;
+      margin-bottom: 0.5rem;
+      display: block;
+      opacity: 0.4;
+    }
+
+    .file-label-text {
+      font-size: 0.7rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .file-label-text strong {
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    .file-name {
+      margin-top: 0.8rem;
+      font-size: 0.7rem;
+      color: var(--text);
+      opacity: 0;
+      transition: opacity 0.3s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .file-name.visible { opacity: 1; }
+
+    /* TEXT INPUT */
+    input[type="text"], textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      padding: 0.6rem 0;
+      outline: none;
+      transition: border-color 0.2s;
+      caret-color: var(--accent);
+    }
+
+    input[type="text"]:focus, textarea:focus {
+      border-bottom-color: var(--accent);
+    }
+
+    input[type="text"]::placeholder, textarea::placeholder {
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    /* SUBMIT */
+    .submit-wrap {
+      margin-top: 2.8rem;
+      animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.3s both;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      background: var(--accent);
+      color: #0d0d0d;
+      border: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      padding: 1rem;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button[type="submit"]:hover { opacity: 0.88; }
+    button[type="submit"]:active { transform: scale(0.99); }
+    button[type="submit"]:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .btn-inner { display: flex; align-items: center; justify-content: center; gap: 0.6rem; }
+
+    .spinner {
+      width: 12px; height: 12px;
+      border: 1.5px solid rgba(0,0,0,0.3);
+      border-top-color: #0d0d0d;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 2rem; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      padding: 0.8rem 1.6rem;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.success { border-color: var(--success); color: var(--success); }
+    .toast.error   { border-color: var(--error);   color: var(--error); }
+
+    .footer-note {
+      margin-top: 2rem;
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-align: center;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="header">
+      <p class="brand">AMENARDI</p>
+      <h1>Nouveau <em>Post</em></h1>
+      <div class="divider"></div>
+    </div>
+
+    <form id="postForm" novalidate>
+
+      <!-- FIELD 1: data (file) -->
+      <div class="field">
+        <label for="dataFile">Data <span class="req">*</span></label>
+        <div class="file-area" id="fileArea">
+          <input type="file" id="dataFile" name="data" required />
+          <span class="file-icon">⬆</span>
+          <p class="file-label-text">
+            Glissez votre fichier ici<br/>
+            ou <strong>parcourir</strong>
+          </p>
+          <p class="file-name" id="fileName">— aucun fichier sélectionné —</p>
+        </div>
+      </div>
+
+      <!-- FIELD 2: type de travail -->
+      <div class="field">
+        <label for="typeTravail">Type de travail <span class="req">*</span></label>
+        <input
+          type="text"
+          id="typeTravail"
+          name="type_de_travail"
+          placeholder="ex: illustration, photo, design..."
+          required
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="submit-wrap">
+        <button type="submit" id="submitBtn">
+          <span class="btn-inner">
+            <span class="spinner" id="spinner"></span>
+            <span id="btnText">Soumettre le post</span>
+          </span>
+        </button>
+      </div>
+    </form>
+
+    <p class="footer-note">Ce formulaire envoie les données à votre workflow n8n via webhook.</p>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ── CONFIG ────────────────────────────────────────────────────
+    // Paste your n8n webhook URL here:
+    const WEBHOOK_URL = "https://jaber-2121.app.n8n.cloud/webhook/post";
+    // ─────────────────────────────────────────────────────────────
+
+    const form      = document.getElementById('postForm');
+    const fileInput = document.getElementById('dataFile');
+    const fileArea  = document.getElementById('fileArea');
+    const fileName  = document.getElementById('fileName');
+    const submitBtn = document.getElementById('submitBtn');
+    const spinner   = document.getElementById('spinner');
+    const btnText   = document.getElementById('btnText');
+    const toast     = document.getElementById('toast');
+
+    // File display
+    fileInput.addEventListener('change', () => {
+      const f = fileInput.files[0];
+      if (f) {
+        fileName.textContent = f.name;
+        fileName.classList.add('visible');
+      }
+    });
+
+    // Drag & drop
+    fileArea.addEventListener('dragover', e => { e.preventDefault(); fileArea.classList.add('dragover'); });
+    fileArea.addEventListener('dragleave', () => fileArea.classList.remove('dragover'));
+    fileArea.addEventListener('drop', e => {
+      e.preventDefault();
+      fileArea.classList.remove('dragover');
+      if (e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
+        fileName.textContent = e.dataTransfer.files[0].name;
+        fileName.classList.add('visible');
+      }
+    });
+
+    // Toast
+    function showToast(msg, type = 'success') {
+      toast.textContent = msg;
+      toast.className = `toast ${type} show`;
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    // Submit
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const typeTravail = document.getElementById('typeTravail').value.trim();
+      if (!fileInput.files[0]) { showToast('Veuillez sélectionner un fichier.', 'error'); return; }
+      if (!typeTravail)        { showToast('Veuillez renseigner le type de travail.', 'error'); return; }
+
+      // UI loading state
+      submitBtn.disabled = true;
+      spinner.style.display = 'block';
+      btnText.textContent = 'Envoi en cours…';
+
+      const formData = new FormData();
+      formData.append('data', fileInput.files[0]);
+      formData.append('type_de_travail', typeTravail);
+
+      try {
+        const res = await fetch(WEBHOOK_URL, { method: 'POST', body: formData });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        showToast('Post envoyé avec succès ✓', 'success');
+        form.reset();
+        fileName.textContent = '— aucun fichier sélectionné —';
+        fileName.classList.remove('visible');
+      } catch (err) {
+        showToast(`Erreur : ${err.message}`, 'error');
+        console.error(err);
+      } finally {
+        submitBtn.disabled = false;
+        spinner.style.display = 'none';
+        btnText.textContent = 'Soumettre le post';
+      }
+    });
+  </script>
+</body>
+</html>
