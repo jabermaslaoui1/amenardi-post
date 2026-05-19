@@ -377,7 +377,7 @@
 
       const formData = new FormData();
       formData.append('data', fileInput.files[0]);
-      formData.append('type_de_travail', typeTravail);
+      formData.append('type de travail', typeTravail);
 
       try {
         const res = await fetch(WEBHOOK_URL, { method: 'POST', body: formData });
